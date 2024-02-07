@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from datetime import datetime
-from tkcolorpicker import askcolor
 
 # Lee la fecha y hora actual
 now = datetime.now()
@@ -16,12 +15,16 @@ out = cv2.VideoWriter(video_name, fourcc, 20.0, (640, 480))
 # Inicializar la cámara
 cap = cv2.VideoCapture(0)
 
-lower = np.array(askcolor(color=[30, 100, 100])[0])
-upper = np.array(askcolor(color=[90, 255, 255])[0])
+lower = np.array([30, 100, 100])
+upper = np.array([90, 255, 255])
 
 # Tomar una foto
 ret, img = cap.read()
 
+namedWindow = "Video en tiempo real"
+# Crear una ventana que ocupe toda la pantalla
+cv2.namedWindow( namedWindow, cv2.WND_PROP_FULLSCREEN)
+cv2.setWindowProperty(namedWindow, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
 while True:
     # Capturar el frame de la cámara
@@ -39,7 +42,7 @@ while True:
     frame[mask != 0] = img[mask != 0]
 
     # Mostrar el frame capturado
-    cv2.imshow("Video grabado", frame)
+    cv2.imshow(namedWindow, frame)
 
     # Guardar el frame en el video
     out.write(frame)
